@@ -4,11 +4,13 @@
 @Author:      dulanj
 @Time:        2021-09-23 15.47
 """
+import threading
 import time
+
+import cv2
 
 from data.drawing import Drawing
 from hand_detect import HandDetector
-import cv2
 
 from hands_info import HandsInfo
 from sound import Sound
@@ -48,11 +50,12 @@ def main():
             hand_movements.detect(hands_info)
             if hand_movements.click_sm.get_state() == State.transit:
                 if hand_movements.click_sm.get_previous_state() == State.on:
-                    sound.click()
+                    thread = sound.click()
                     draw_click = "Clack"
                     _draw_count = 3
                 elif hand_movements.click_sm.get_previous_state() == State.off:
-                    sound.double_click()
+
+                    thread = sound.double_click()
                     draw_click = "Click"
                     _draw_count = 3
 
